@@ -12,10 +12,10 @@ type Rect struct {
 
 // NewRect returns a new rect.
 // Position is hidden, use Pos method.
-func NewRect(anchor int, x, y, w, h float64) Rect {
+func NewRect(anchor int, x, y, w, h float64) *Rect {
 	var r Rect
 	r.Set(anchor, x, y, w, h)
-	return r
+	return &r
 }
 
 // Set sets the data

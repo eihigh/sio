@@ -4,6 +4,8 @@ package sio
 type Stm struct {
 	count int
 	state int
+
+	phases map[string]int
 }
 
 // Update increments the count
@@ -45,4 +47,11 @@ func (s *Stm) To(next int) {
 // Continue changes state not to reset count
 func (s *Stm) Continue(next int) {
 	s.state = next
+}
+
+func (s *Stm) PushPhaseByDiff(name string, diff int) {
+}
+
+func (s *Stm) Phase() string {
+	return ""
 }
