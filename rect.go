@@ -8,6 +8,7 @@ package sio
 // Rect is a simple rect
 type Rect struct {
 	x, y, w, h float64
+	anchor     int
 }
 
 // NewRect returns a new rect.
@@ -20,6 +21,7 @@ func NewRect(anchor int, x, y, w, h float64) *Rect {
 
 // Set sets the data
 func (r *Rect) Set(anchor int, x, y, w, h float64) {
+	r.anchor = anchor
 	r.w, r.h = w, h
 
 	switch anchor {
@@ -76,20 +78,26 @@ func (r *Rect) Pos(anchor int) (float64, float64) {
 	return x, y
 }
 
-// CloneResizing returns a new resized rect, no breaking changes
-func (r *Rect) CloneResizing(origAnchor, newAnchor int, diffX, diffY float64) *Rect {
-	var ret Rect
-	ret.w, ret.h = r.w+diffX, r.h+diffY
-	x, y := r.Pos(origAnchor)
-	ret.Move(newAnchor, x, y)
-	return &ret
+// Clone clones the rect, able to set new anchor
+func (r *Rect) Clone(oldAnchor, newAnchor int) *Rect {
+	x, y := r.Pos(oldAnchor)
+	return NewRect(newAnchor, x, y, r.w, r.h)
 }
 
-// CloneScaling returns a new scaled rect
-func (r *Rect) CloneScaling(origAnchor, newAnchor int, scaleX, scaleY float64) *Rect {
-	var ret Rect
-	ret.w, ret.h = r.w*scaleX, r.h*scaleY
-	x, y := r.Pos(origAnchor)
-	ret.Move(newAnchor, x, y)
-	return &ret
+// Resize resizes the rect.
+func (r *Rect) Resize(diffX, diffY float64) *Rect {
+	x, y := r.Pos(r.anchor)
+	r.w += diffX
+	r.h += diffY
+	r.Move(r.anchor, x, y)
+	return r
+}
+
+// Scale returns a new scaled rect
+func (r *Rect) Scale(scaleX, scaleY float64) *Rect {
+	x, y := r.Pos(r.anchor)
+	r.w *= scaleX
+	r.h *= scaleY
+	r.Move(r.anchor, x, y)
+	return r
 }

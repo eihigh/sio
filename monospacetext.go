@@ -2,12 +2,12 @@ package sio
 
 import "github.com/mattn/go-runewidth"
 
-// Text Drawing Statuses
+// Text Drawing Status
 var (
 	DefaultEmHeight = 12.0
 	DefaultEmWidth  = 6.0
 
-	DefaultLineHeight = 1.5
+	DefaultLineHeight = 1.3
 )
 
 // TextBox provides some functions for monospace font drawing
@@ -22,8 +22,15 @@ type TextBox struct {
 	pos  int
 }
 
-// NewTextBox creates an instance with default profile
+// NewTextBox creates a TextBox with default profile.
 func NewTextBox(anchor int, text string) *TextBox {
+	tb := NewTypeWriter(anchor, text)
+	tb.Reveal()
+	return tb
+}
+
+// NewTypeWriter creates a TextBox with default profile.
+func NewTypeWriter(anchor int, text string) *TextBox {
 	return &TextBox{
 		Anchor:     anchor,
 		Rect:       NewRect(7, 0, 0, 0, 0),
@@ -34,19 +41,19 @@ func NewTextBox(anchor int, text string) *TextBox {
 	}
 }
 
-// SetText sets the text
+// SetText sets the text.
 func (t *TextBox) SetText(text string) {
 	t.text = []rune(text)
 	t.pos = 0
 }
 
-// SeekRune adds the last text position.
-func (t *TextBox) SeekRune() {
+// NextRune makes the next rune visible.
+func (t *TextBox) NextRune() {
 	t.pos++
 }
 
-// SeekLine adds the line.
-func (t *TextBox) SeekLine() {
+// NextLine makes the next line visible.
+func (t *TextBox) NextLine() {
 	for {
 		t.pos++
 		if t.text[t.pos] == '\n' {
@@ -55,12 +62,12 @@ func (t *TextBox) SeekLine() {
 	}
 }
 
-// SeekAll seeks to the end
-func (t *TextBox) SeekAll() {
+// Reveal makes all text visible.
+func (t *TextBox) Reveal() {
 	t.pos = len(t.text)
 }
 
-// TextLineInfo contains info to draw a line of text
+// TextLineInfo contains info to draw a line of text.
 type TextLineInfo struct {
 	Text string
 	X, Y int
@@ -71,26 +78,27 @@ func (t *TextBox) Lines() []TextLineInfo {
 
 	lines := make([]TextLineInfo, 0)
 
-	end := len(t.text)
+	included := len(t.text)
 	if t.IgnoreHiddenText {
-		end = t.pos
+		included = t.pos
 	}
 
-	// get end of each lines
+	// get line fields
 	lns := make([]int, 0)
-	for n, r := range t.text[:end] {
+	for i, r := range t.text[:included] {
 		if r == '\n' {
-			lns = append(lns, n)
+			lns = append(lns, i)
 		}
 	}
 
 	// make ruler (zero width)
-	h := float64(len(lns)) * t.EmHeight
-	h += float64(len(lns[1:])) * t.EmHeight * (t.LineHeight - 1.0)
+	h := float64(len(lns)) * t.EmHeight * t.LineHeight // lines with line break
+	h += t.EmHeight                                    // first line
 	x, y := t.Rect.Pos(t.Anchor)
-	horz := NewRect(t.Anchor, x, y, 0, h)
+	vert := NewRect(t.Anchor, x, y, 0, h)
 
-	// split lines and get runewidths
+	// make line infos
+	lns = append(lns, len(t.text))
 	n := 0
 	h = 0
 	for _, m := range lns {
@@ -98,9 +106,9 @@ func (t *TextBox) Lines() []TextLineInfo {
 		for _, r := range t.text[n:m] {
 			w += runewidth.RuneWidth(r)
 		}
-		x, y = horz.Pos(7) // from (left-)top
-		vert := NewRect(t.Anchor, x, y+h, float64(w)*t.EmWidth, 0)
-		x, y = vert.Pos(7)
+		x, y = vert.Pos(7) // (left-)top position
+		horz := NewRect(t.Anchor, x, y+h, float64(w)*t.EmWidth, 0)
+		x, y = horz.Pos(7)
 		line := TextLineInfo{
 			Text: string(t.text[n:m]),
 			X:    int(x + 0.5),
