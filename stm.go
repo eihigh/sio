@@ -48,10 +48,3 @@ func (s *Stm) To(next int) {
 func (s *Stm) Continue(next int) {
 	s.state = next
 }
-
-func (s *Stm) PushPhaseByDiff(name string, diff int) {
-}
-
-func (s *Stm) Phase() string {
-	return ""
-}
