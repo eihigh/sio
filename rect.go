@@ -43,9 +43,15 @@ func (r *Rect) Set(anchor int, x, y, w, h float64) {
 	}
 }
 
+// Drive changes the anchor
+func (r *Rect) Drive(anchor int) *Rect {
+	r.anchor = anchor
+	return r
+}
+
 // Move sets position relatively
-func (r *Rect) Move(anchor int, x, y float64) {
-	r.Set(anchor, x, y, r.w, r.h)
+func (r *Rect) Move(x, y float64) {
+	r.Set(r.anchor, x, y, r.w, r.h)
 }
 
 // Width is getter
@@ -89,7 +95,7 @@ func (r *Rect) Resize(diffX, diffY float64) *Rect {
 	x, y := r.Pos(r.anchor)
 	r.w += diffX
 	r.h += diffY
-	r.Move(r.anchor, x, y)
+	r.Move(x, y)
 	return r
 }
 
@@ -98,6 +104,6 @@ func (r *Rect) Scale(scaleX, scaleY float64) *Rect {
 	x, y := r.Pos(r.anchor)
 	r.w *= scaleX
 	r.h *= scaleY
-	r.Move(r.anchor, x, y)
+	r.Move(x, y)
 	return r
 }
