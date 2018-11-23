@@ -7,12 +7,12 @@ import (
 
 // UnitVector returns rotated unit vector
 func UnitVector(angle float64) complex128 {
-	return cmplx.Pow(complex(1, 0), complex(angle, 0))
+	return cmplx.Pow(0+1i, complex(angle, 0))
 }
 
 // Rot returns (360/n)° rotated unit vector
-func Rot(n float64) complex128 {
-	return UnitVector(4.0 / n)
+func Rot(n int) complex128 {
+	return UnitVector(4.0 / float64(n))
 }
 
 // Wave returns sin(2π*ratio)
