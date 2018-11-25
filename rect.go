@@ -50,8 +50,9 @@ func (r *Rect) Drive(anchor int) *Rect {
 }
 
 // Move sets position relatively
-func (r *Rect) Move(x, y float64) {
+func (r *Rect) Move(x, y float64) *Rect {
 	r.Set(r.anchor, x, y, r.w, r.h)
+	return r
 }
 
 // Width is getter
@@ -106,4 +107,12 @@ func (r *Rect) Scale(scaleX, scaleY float64) *Rect {
 	r.h *= scaleY
 	r.Move(x, y)
 	return r
+}
+
+// Contains reports it contains the point
+func (r *Rect) Contains(pos complex128) bool {
+	x, y := real(pos), imag(pos)
+	left, top := r.Pos(7)
+	right, bottom := r.Pos(3)
+	return left <= x && x < right && top <= y && y < bottom
 }

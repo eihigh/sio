@@ -28,8 +28,8 @@ func (s Stm) HasElapsed(frames int) bool {
 	return s.count > frames
 }
 
-// ElapsedRatio returns count / base
-func (s Stm) ElapsedRatio(base int) float64 {
+// RatioTo returns count / base
+func (s Stm) RatioTo(base int) float64 {
 	return float64(s.count) / float64(base)
 }
 
