@@ -111,8 +111,28 @@ func (r *Rect) Scale(scaleX, scaleY float64) *Rect {
 
 // Contains reports it contains the point
 func (r *Rect) Contains(pos complex128) bool {
-	x, y := real(pos), imag(pos)
+	return r.ContainsF(real(pos), imag(pos))
+}
+
+// ContainsF reports it contains the point
+func (r *Rect) ContainsF(x, y float64) bool {
 	left, top := r.Pos(7)
 	right, bottom := r.Pos(3)
 	return left <= x && x < right && top <= y && y < bottom
+}
+
+// Wraps reports whether the passed rect is wrapped by the rect.
+func (r *Rect) Wraps(rhs *Rect) bool {
+	return r.ContainsF(rhs.Pos(7)) && r.ContainsF(rhs.Pos(3))
+}
+
+// Intersects reports whether the rects intersect.
+func (r *Rect) Intersects(rhs *Rect) bool {
+	r1, t1 := r.Pos(7)
+	l1, b1 := r.Pos(3)
+	r2, t2 := rhs.Pos(7)
+	l2, b2 := rhs.Pos(3)
+	x := (r1 <= r2 && r2 <= l1) || (r1 <= l2 && l2 <= l1)
+	y := (t1 <= t2 && t2 <= b1) || (t1 <= b2 && b2 <= b1)
+	return x && y
 }
