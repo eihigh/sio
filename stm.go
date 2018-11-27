@@ -2,15 +2,15 @@ package sio
 
 // Stm is a simple state keeper
 type Stm struct {
-	total int
 	count int
 	state int
+	age   int
 }
 
 // Update increments the count
 func (s *Stm) Update() {
 	s.count++
-	s.total++
+	s.age++
 }
 
 // Current returns current state
@@ -23,14 +23,19 @@ func (s Stm) Elapsed() int {
 	return s.count
 }
 
-// TotalElapsed returns total elapsed time from beginning
-func (s Stm) TotalElapsed() int {
-	return s.total
+// Age returns total elapsed time from beginning
+func (s Stm) Age() int {
+	return s.age
 }
 
 // HasElapsed reports the time has elapsed or not
 func (s Stm) HasElapsed(frames int) bool {
 	return s.count > frames
+}
+
+// HasAged reports the time has elapsed or not
+func (s Stm) HasAged(frames int) bool {
+	return s.age > frames
 }
 
 // RatioTo returns count / base
@@ -43,10 +48,10 @@ func (s *Stm) Reset() {
 	s.count = 0
 }
 
-// ResetAll resets the count and the total
-func (s *Stm) ResetAll() {
+// Rebirth resets the count and the age
+func (s *Stm) Rebirth() {
 	s.count = 0
-	s.total = 0
+	s.age = 0
 }
 
 // To changes current state
