@@ -13,13 +13,13 @@ func (s *Stm) Update() {
 	s.age++
 }
 
-// Current returns current state
-func (s Stm) Current() int {
+// Get returns current state
+func (s Stm) Get() int {
 	return s.state
 }
 
-// Elapsed returns elapsed count from changing state
-func (s Stm) Elapsed() int {
+// Count returns elapsed count from changing state
+func (s Stm) Count() int {
 	return s.count
 }
 
@@ -28,8 +28,8 @@ func (s Stm) Age() int {
 	return s.age
 }
 
-// HasElapsed reports the time has elapsed or not
-func (s Stm) HasElapsed(frames int) bool {
+// HasCounted reports the time has elapsed or not
+func (s Stm) HasCounted(frames int) bool {
 	return s.count > frames
 }
 
