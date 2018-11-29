@@ -1,31 +1,35 @@
 package sio
 
-type phase struct {
-	end   int
-	state int
-}
-
 type Timeline struct {
 	phases []phase
-	state  State
+	index  int
+	count  int
 }
 
-func (t *Timeline) AppendByDiff(state, diff int) {
-	total := 0
-	if len(t.phases) > 0 {
-		total = t.phases[len(t.phases)-1].end
-	}
+type phase struct {
+	name   string
+	length int
+}
+
+func (t *Timeline) Current() string {
+	return t.phases[t.index].name
+}
+
+func (t *Timeline) Append(name string, length int) {
 	t.phases = append(t.phases, phase{
-		end:   total + diff,
-		state: state,
+		name:   name,
+		length: length,
 	})
 }
 
-func (t *Timeline) Current() int {
-	for _, p := range t.phases {
-		if t.state.Count() < p.end {
-			return p.state
-		}
+func (t *Timeline) Update() {
+	p := t.phases[t.index]
+	if p.length == -1 {
+		return
 	}
-	return 0
+	if t.count > p.length {
+		t.index++
+		t.count = 0
+	}
+	t.count++
 }
