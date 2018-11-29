@@ -17,8 +17,8 @@ func UnitVector(angle float64) complex128 {
 }
 
 // Rot returns (360/n)° rotated unit vector
-func Rot(n int) complex128 {
-	return UnitVector(4.0 / float64(n))
+func Rot(n float64) complex128 {
+	return UnitVector(4.0 / n)
 }
 
 // Wave returns sin(2π*ratio)
