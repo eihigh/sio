@@ -103,10 +103,14 @@ func (r *Rect) Scale(scaleX, scaleY float64) *Rect {
 	return r
 }
 
-func (r *Rect) SetSize(W, H float64) *Rect {
+func (r *Rect) SetSize(w, h float64) *Rect {
 	X, Y := r.Pos(r.anchor)
-	r.W = W
-	r.H = H
+	if w >= 0 {
+		r.W = w
+	}
+	if h >= 0 {
+		r.H = h
+	}
 	r.Move(X, Y)
 	return r
 }
