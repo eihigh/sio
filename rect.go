@@ -55,6 +55,12 @@ func (r *Rect) Move(X, Y float64) *Rect {
 	return r
 }
 
+// Shift shifts the rect relatively.
+func (r *Rect) Shift(x, y float64) *Rect {
+	r.Set(r.anchor, r.X+x, r.Y+y, r.W, r.H)
+	return r
+}
+
 // Pos returns relative position
 func (r *Rect) Pos(anchor int) (float64, float64) {
 	var X, Y float64
