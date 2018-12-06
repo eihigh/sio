@@ -17,6 +17,11 @@ func (w *Worker) Continue(state string) {
 	w.State = state
 }
 
+// T returns useful ratio.
+func (w *Worker) T(base float64) float64 {
+	return float64(w.Count) / base
+}
+
 // Do executes the function if the count is in the range of [b, e).
 func (w *Worker) Do(b, e int, f func(t float64)) {
 	if w.Count < b {
