@@ -3,7 +3,7 @@ package sio
 import (
 	"strings"
 
-	"github.com/mattn/go-runewidth"
+	runewidth "github.com/mattn/go-runewidth"
 )
 
 // Text Drawing Status
@@ -33,41 +33,38 @@ func (r *Rect) NewTextBox(text string, anchor int) *TextBox {
 	}
 }
 
-type TextLineInfo struct {
+type TextRow struct {
 	Text string
 	X, Y int
 }
 
-func (t *TextBox) Lines() []TextLineInfo {
+func TextRows(text string, re *Rect) []TextRow {
+	rows := []TextRow{}
 
-	infos := []TextLineInfo{}
-
-	lines := strings.Split(t.text, "\n")
+	lines := strings.Split(text, "\n")
 	if len(lines) == 0 {
-		return infos
+		return rows
 	}
 
 	// make vertical ruler
-	h := float64(len(lines)-1) * t.EmHeight * t.LineHeight
-	h += t.EmHeight
-	x, y := t.Rect.Pos(t.Anchor)
-	vert := NewRect(t.Anchor, x, y, 0, h)
+	h := float64(len(lines)-1) * DefaultEmHeight * DefaultLineHeight
+	h += DefaultEmHeight
+	x, y := re.Pos(re.anchor)
+	vert := NewRect(re.anchor, x, y, 0, h)
 	x, y = vert.Pos(7) // top of the vert
 
-	// make line infos
 	h = 0
 	for _, line := range lines {
 		w := runewidth.StringWidth(line)
-		horz := NewRect(t.Anchor, x, y+h, float64(w)*t.EmWidth, 0)
-		u, v := horz.Pos(7) // left of the horz
+		horz := NewRect(re.anchor, x, y+h, float64(w)*DefaultEmWidth, 0)
+		u, v := horz.Pos(7)
 
-		infos = append(infos, TextLineInfo{
+		rows = append(rows, TextRow{
 			Text: line,
 			X:    int(u + 0.5),
 			Y:    int(v + 0.5),
 		})
-		y += t.EmHeight * t.LineHeight
 	}
 
-	return infos
+	return rows
 }
