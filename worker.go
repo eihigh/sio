@@ -1,5 +1,7 @@
 package sio
 
+type Workers map[string]*Worker
+
 // Worker keeps count and state.
 type Worker struct {
 	Count int

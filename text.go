@@ -57,6 +57,7 @@ func TextRows(text string, re *Rect) []TextRow {
 	for _, line := range lines {
 		w := runewidth.StringWidth(line)
 		horz := NewRect(re.anchor, x, y+h, float64(w)*DefaultEmWidth, 0)
+		h += DefaultEmHeight * DefaultLineHeight
 		u, v := horz.Pos(7)
 
 		rows = append(rows, TextRow{

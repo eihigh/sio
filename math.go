@@ -30,3 +30,9 @@ func Wave(ratio float64) float64 {
 func UWave(ratio float64) float64 {
 	return 0.5 + 0.5*Wave(ratio)
 }
+
+// Normalize returns normalized vector.
+func Normalize(c complex128) complex128 {
+	r := cmplx.Abs(c)
+	return complex(real(c)/r, imag(c)/r)
+}
