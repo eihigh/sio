@@ -36,3 +36,8 @@ func Normalize(c complex128) complex128 {
 	r := cmplx.Abs(c)
 	return complex(real(c)/r, imag(c)/r)
 }
+
+// Ctof converts complex128 into 2 float64s
+func Ctof(c complex128) (float64, float64) {
+	return real(c), imag(c)
+}
