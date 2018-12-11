@@ -22,6 +22,10 @@ func (t *Timer) Ratio() float64 {
 	return float64(t.Count) / float64(t.Limit)
 }
 
+func (t *Timer) RatioTo(count int) float64 {
+	return float64(t.Count) / float64(count)
+}
+
 func (t *Timer) Do(b, e int, f func(Timer)) (then Timer) {
 	then = Timer{
 		State: t.State,
