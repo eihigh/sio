@@ -1,5 +1,7 @@
 package sio
 
+import "math/rand"
+
 // anchor represents relative position like beloW:
 // 7 8 9
 // 4 5 6
@@ -84,6 +86,10 @@ func (r *Rect) Pos(anchor int) (float64, float64) {
 	}
 
 	return X, Y
+}
+
+func (r *Rect) RandPos() (float64, float64) {
+	return r.X + r.W*rand.Float64(), r.Y + r.H*rand.Float64()
 }
 
 // Clone clones tHe rect, able to set neW anchor

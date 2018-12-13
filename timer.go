@@ -61,6 +61,19 @@ func (t *Timer) Do(b, e int, f func(Timer)) (then Timer) {
 	return
 }
 
+func (t *Timer) After(b int, f func(Timer)) {
+	if t.Count < b {
+		return
+	}
+
+	child := Timer{
+		State: t.State,
+		Count: t.Count - b,
+		Limit: 0,
+	}
+	f(child)
+}
+
 func (t *Timer) Once(f func()) {
 	if t.Count == 0 {
 		f()
