@@ -18,6 +18,11 @@ func (t *Timer) Switch(state string) {
 	t.Count = 0
 }
 
+func (t *Timer) Continue(state string) {
+	t.State = state
+	// not reset the count
+}
+
 func (t *Timer) Ratio() float64 {
 	return float64(t.Count) / float64(t.Limit)
 }
