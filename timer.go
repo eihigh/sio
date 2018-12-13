@@ -33,6 +33,13 @@ func (t *Timer) Do(b, e int, f func(Timer)) (then Timer) {
 		Limit: 0,
 	}
 
+	if b < 0 {
+		b = t.Limit + b
+	}
+	if e <= 0 {
+		e = t.Limit + e
+	}
+
 	if t.Count < b {
 		return
 	}
