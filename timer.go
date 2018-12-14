@@ -31,6 +31,10 @@ func (t *Timer) RatioTo(count int) float64 {
 	return float64(t.Count) / float64(count)
 }
 
+func (t *Timer) IsLast() bool {
+	return t.Count == t.Limit-1
+}
+
 func (t *Timer) Do(b, e int, f func(Timer)) (then Timer) {
 	then = Timer{
 		State: t.State,
