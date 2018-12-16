@@ -5,6 +5,13 @@ type Timer struct {
 	Count, Limit int
 }
 
+func NewTimer(state string) *Timer {
+	return &Timer{
+		State: state,
+		Count: -1,
+	}
+}
+
 func (t *Timer) Update() {
 	if t.Limit != 0 && t.Count < t.Limit {
 		t.Count++
@@ -63,6 +70,15 @@ func (t *Timer) Do(b, e int, f func(Timer)) (then Timer) {
 	}
 	f(child)
 	return
+}
+
+func (t *Timer) Loop(duration int, f func(Timer)) {
+	child := Timer{
+		State: t.State,
+		Count: t.Count % duration,
+		Limit: duration,
+	}
+	f(child)
 }
 
 func (t *Timer) After(b int, f func(Timer)) {

@@ -88,6 +88,11 @@ func (r *Rect) Pos(anchor int) (float64, float64) {
 	return X, Y
 }
 
+func (r *Rect) CPos(anchor int) complex128 {
+	x, y := r.Pos(anchor)
+	return complex(x, y)
+}
+
 func (r *Rect) RandPos() (float64, float64) {
 	return r.X + r.W*rand.Float64(), r.Y + r.H*rand.Float64()
 }
