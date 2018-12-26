@@ -41,3 +41,15 @@ func Normalize(c complex128) complex128 {
 func Ctof(c complex128) (float64, float64) {
 	return real(c), imag(c)
 }
+
+func Dot(a, b complex128) complex128 {
+	x1, y1 := real(a), imag(a)
+	x2, y2 := real(b), imag(b)
+	return complex(x1*x2, y1*y2)
+}
+
+func Cross(a, b complex128) complex128 {
+	x1, y1 := real(a), imag(a)
+	x2, y2 := real(b), imag(b)
+	return complex(x1*y2, -x2*y1)
+}
